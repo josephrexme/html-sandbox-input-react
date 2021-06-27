@@ -1,0 +1,30 @@
+{
+  "name": "html-sandbox-input-react",
+  "version": "0.0.1",
+  "description": "Sandbox HTML input",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josephrexme/html-sandbox-input-react.git"
+  },
+  "keywords": [
+    "html",
+    "sanitize",
+    "input",
+    "sandbox",
+    "css",
+    "scoped"
+  ],
+  "author": "Joseph Rex",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/josephrexme/html-sandbox-input-react/issues"
+  },
+  "homepage": "https://github.com/josephrexme/html-sandbox-input-react#readme"
+}
