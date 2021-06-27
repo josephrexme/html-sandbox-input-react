@@ -68,7 +68,7 @@ function srcPathCleaner(htmlValue) {
  * @param {import("react").ElementType} as
  * @param {array[str]} allow list of elements to allow
  * @param {array[str]} block list of elements not to allow
- * @param {boolean} scope determines if css style is scoped
+ * @param {string} scope determines if css style is scoped
  * @param {function} onChange
  * @param {function} onWarn
  */
