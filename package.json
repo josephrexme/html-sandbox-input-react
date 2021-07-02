@@ -26,5 +26,16 @@
   "bugs": {
     "url": "https://github.com/josephrexme/html-sandbox-input-react/issues"
   },
-  "homepage": "https://github.com/josephrexme/html-sandbox-input-react#readme"
+  "homepage": "https://github.com/josephrexme/html-sandbox-input-react#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "babel-jest": "^27.0.6",
+    "jest": "^27.0.6"
+  },
+  "dependencies": {
+    "react": "^17.0.2"
+  }
 }

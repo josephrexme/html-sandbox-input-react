@@ -10,7 +10,7 @@ const defaultBlockList = [
   "template"
 ]
 
-const stringifyArray = (arr) => {
+export const stringifyArray = (arr) => {
   return arr.filter((a, b, c) => b === c.indexOf(a)).join(", ")
 }
 
@@ -42,22 +42,37 @@ function validateMarkup(value, listType, list) {
   }
 }
 
-function scopeStyles(htmlValue, scope) {
+export function scopeStyles(htmlValue, scope) {
   const regex = /<style>(.*?)<\/style>/gms
   const withScoped = htmlValue.replace(regex, (match) => {
     const replaceMent = `.${scope} $&`
     return match.replace(/([\\.#\\[].+?|\w+|\*)(?={)/gm, replaceMent)
   })
-  return `<span class="${scope}">${withScoped}</span>`
+  return `<span class=${scope}>${withScoped}</span>`
 }
 
-function srcPathCleaner(htmlValue) {
+export function srcPathCleaner(htmlValue) {
   return htmlValue.replace(/src=["'](.*?)["']/gm, (match, source) => {
     if (/https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/.test(source)) {
       return match
     }
     return 'src=""'
   })
+}
+
+function useForwardedRef(ref) {
+  const innerRef = React.useRef(null)
+
+  React.useEffect(() => {
+    if (!ref) return
+    // Handle function refs
+    if (ref instanceof Function) {
+      ref(innerRef.current)
+    } else {
+      ref.current = innerRef.current
+    }
+  })
+  return innerRef
 }
 
 /**
@@ -72,15 +87,18 @@ function srcPathCleaner(htmlValue) {
  * @param {function} onChange
  * @param {function} onWarn
  */
-export default function HTMLSandboxInput({
-  as: Component = "textarea",
-  allow = [],
-  block = [],
-  scope = "sandbox-scope",
-  onChange = () => null,
-  onWarn = () => null,
-  ...props
-}) {
+let HTMLSandboxInput = (
+  {
+    as: Component = "textarea",
+    allow = [],
+    block = [],
+    scope = "sandbox-scope",
+    onChange = () => null,
+    onWarn = () => null,
+    ...props
+  },
+  ref
+) => {
   if (!Array.isArray(allow) || !Array.isArray(block)) {
     throw new TypeError(
       "invalid argument type supplied to allow or block list. Expected an array"
@@ -89,7 +107,7 @@ export default function HTMLSandboxInput({
   const blockList = block.length ? block : defaultBlockList
   const listType = allow.length ? "allow" : "block"
   const list = allow.length ? allow : blockList
-  const inputRef = React.useRef()
+  const inputRef = useForwardedRef(ref)
 
   const handleChange = () => {
     let { html, warn } = validateMarkup(inputRef.current.value, listType, list)
@@ -103,7 +121,10 @@ export default function HTMLSandboxInput({
   return <Component onChange={handleChange} ref={inputRef} {...props} />
 }
 
+HTMLSandboxInput = React.forwardRef(HTMLSandboxInput)
+
 HTMLSandboxInput.defaults = {
   blockList: defaultBlockList
 }
 
+export default HTMLSandboxInput
